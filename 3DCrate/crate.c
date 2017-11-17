@@ -46,7 +46,7 @@ int xCenter, yCenter;
 BITMAPINFO pbmi[40];
 BYTE canvas[(WIN_WIDTH*3 + WIN_WIDTH%4) * WIN_HEIGHT];
 
-char imgObj[IMGOBJCNT][IMGBUFF_WIDTH * IMGBUFF_HEIGHT];
+int imgObj[IMGOBJCNT][IMGBUFF_WIDTH * IMGBUFF_HEIGHT];
 int objOps[OBJCNT][OPCNT];//object operations
 float objOpValues[OBJCNT][OPCNT];//object operation values
 
@@ -91,7 +91,7 @@ void loadImg(int imgObjNum, char *imgFile)
       for (x=IMGBUFF_WIDTH/2-imgWidth/2; x < imgWidth+IMGBUFF_WIDTH/2-imgWidth/2; x++)
       {
          if ((x >= 0) && (x < IMGBUFF_WIDTH) && (y >= 0) && (y < IMGBUFF_HEIGHT))
-         imgObj[imgObjNum][IMGBUFF_WIDTH*y+x] = (int)fgetc(bmpFile)/127 * 255;
+         imgObj[imgObjNum][IMGBUFF_WIDTH*y+x] = (int)fgetc(bmpFile)/128 * 255;
          
          fseek(bmpFile, 2, SEEK_CUR);
       }
