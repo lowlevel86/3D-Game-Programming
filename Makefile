@@ -18,5 +18,3 @@ run:
 	make -C 3DSpaceInvaders run
 	make -C Dbgwin run
 	make -C Draw run
-
-
