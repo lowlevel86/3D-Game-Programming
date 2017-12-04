@@ -66,7 +66,7 @@ void loadImg(int imgObjNum, char *imgFile)
    int x, y;
    struct stat stat_p;
    FILE *bmpFile;
-   int imgWidth, roughImgWidth, powOf2Limiter;
+   int imgWidth;
    int headerSize;
    
    // does the file exist
@@ -82,9 +82,7 @@ void loadImg(int imgObjNum, char *imgFile)
    //get image width
    //the image must be square and have a width with a power of 2
    //the header must be small enough relative to the image data
-   roughImgWidth = sqrt(stat_p.st_size / 3);//3 bytes per pixel
-   powOf2Limiter = log(roughImgWidth) / log(2) + 0.5;//add 0.5 to round
-   imgWidth = pow(2, powOf2Limiter);
+   imgWidth = pow(2, (int)(log(sqrt(stat_p.st_size/3))/log(2)));
    
    //read image file to buffer
    headerSize = stat_p.st_size - imgWidth * imgWidth * 3;
