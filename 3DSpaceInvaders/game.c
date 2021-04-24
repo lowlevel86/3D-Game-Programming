@@ -366,7 +366,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
    static float rotBullet = 0;
    
    static float rotInvader = 0;
-   static float invaderSpeed = 0.2;
+   static float invaderSpeed = 0.003;
    static float xInvaderLoc[INVADERCNT];
    static float yInvaderLoc[INVADERCNT];
    static float zInvaderLoc[INVADERCNT];
@@ -425,7 +425,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
          bulletDistance = 0;
          fireBullet = FALSE;
          
-         //move invaders out away from ship
+         //move invaders somewhere away from ship
          for (i=0; i < INVADERCNT; i++)
          {
             xInvaderLoc[i] = 0;
@@ -435,7 +435,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             rot(&xInvaderLoc[i], &zInvaderLoc[i], rand() % 360);
          }
          
-         invaderSpeed = 0.2;
+         invaderSpeed = 0.003;
          
          scoreNum = 0;
          resetGame = FALSE;
@@ -466,39 +466,33 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
       for (i=0; i < INVADERCNT; i++)
       {
          //move invaders closer to ship (location 0)
-         float invaderToShipDist;
-         invaderToShipDist = sqrt(pow(sqrt(pow(xInvaderLoc[i],2)+
-                                           pow(yInvaderLoc[i],2)),2)+
-                                           pow(zInvaderLoc[i],2));
-         
-         xInvaderLoc[i] *= (invaderToShipDist-invaderSpeed) / invaderToShipDist;
-         yInvaderLoc[i] *= (invaderToShipDist-invaderSpeed) / invaderToShipDist;
-         zInvaderLoc[i] *= (invaderToShipDist-invaderSpeed) / invaderToShipDist;
+         xInvaderLoc[i] *= 1.0 - invaderSpeed;
+         yInvaderLoc[i] *= 1.0 - invaderSpeed;
+         zInvaderLoc[i] *= 1.0 - invaderSpeed;
          
          //game over if an invader reaches the ship
-         if (invaderToShipDist <= 30)
+         if (fabs(xInvaderLoc[i]) <= 30)
+         if (fabs(yInvaderLoc[i]) <= 30)
+         if (fabs(zInvaderLoc[i]) <= 30)
          {
             gameOver = TRUE;
             sprintf(endGameStr, "SCORE: %i   Press Enter To Play", scoreNum);
             SetWindowText(hwnd, TEXT(endGameStr));
          }
          
-         float bulletToInvaderDist;
-         bulletToInvaderDist = sqrt(pow(sqrt(pow(xBulletLoc-xInvaderLoc[i],2)+
-                                             pow(yBulletLoc-yInvaderLoc[i],2)),2)+
-                                             pow(zBulletLoc-zInvaderLoc[i],2));
-         
          //reset invader if the bullet hits the invader
          if (fireBullet)
          if (gameOver == FALSE)
-         if (bulletToInvaderDist <= 30)
+         if (fabs(xBulletLoc - xInvaderLoc[i]) <= 30)
+         if (fabs(yBulletLoc - yInvaderLoc[i]) <= 30)
+         if (fabs(zBulletLoc - zInvaderLoc[i]) <= 30)
          {
             xInvaderLoc[i] = 0;
             yInvaderLoc[i] = 400;
             zInvaderLoc[i] = 0;
             rot(&yInvaderLoc[i], &zInvaderLoc[i], rand() % 360);//x rotate
             rot(&xInvaderLoc[i], &zInvaderLoc[i], rand() % 360);//y rotate
-            invaderSpeed += 0.003;
+            invaderSpeed += 0.00005;
             
             bulletDistance = 0;
             
