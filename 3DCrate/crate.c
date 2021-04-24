@@ -55,12 +55,6 @@ float hUcRotValues[OPCNT];
 float vUcRotValues[OPCNT];
 
 
-inline double round(double val)
-{    
-   return floor(val + 0.5);
-}
-
-
 void loadImg(int imgObjNum, char *imgFile)
 {
    int x, y;
@@ -202,8 +196,8 @@ void applyObjOps(int objNum, int opNum, int x, int y, int *xDelta, int *yDelta, 
    }
    
    //change size relative to distance from camera
-   *xDelta = round(xPt * perspctv / (perspctv - zPt) + xCenter);
-   *yDelta = round(yPt * perspctv / (perspctv - zPt) + yCenter);
+   *xDelta = xPt * perspctv / (perspctv - zPt) + xCenter;
+   *yDelta = yPt * perspctv / (perspctv - zPt) + yCenter;
    
    //change brightness relative to distance from camera
    if (zPt >= 0)
