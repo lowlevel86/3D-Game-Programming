@@ -1,0 +1,16 @@
+.PHONY: clean run
+
+SRC = draw.c
+EXE = draw.exe
+CFLAGS += -O2
+
+all: $(EXE)
+
+$(EXE): $(SRC)
+	x86_64-w64-mingw32-gcc $(CFLAGS) $< -mwindows -o $@
+
+clean:
+	rm -f $(EXE)
+
+run: $(EXE)
+	wine $^
